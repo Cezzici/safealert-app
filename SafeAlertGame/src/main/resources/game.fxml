@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+
+<AnchorPane xmlns:fx="http://javafx.com/fxml" fx:controller="safealert.GameController">
+    <VBox spacing="10" layoutX="20" layoutY="20">
+        <Label fx:id="statusLabel" text="Rândul lui X" />
+        <GridPane fx:id="gameGrid" hgap="5" vgap="5">
+            <columnConstraints>
+                <ColumnConstraints percentWidth="33" />
+                <ColumnConstraints percentWidth="33" />
+                <ColumnConstraints percentWidth="33" />
+            </columnConstraints>
+            <rowConstraints>
+                <RowConstraints percentHeight="33" />
+                <RowConstraints percentHeight="33" />
+                <RowConstraints percentHeight="33" />
+            </rowConstraints>
+        </GridPane>
+        <Button text="Reset" onAction="#handleReset"/>
+    </VBox>
+</AnchorPane>

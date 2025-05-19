@@ -1,0 +1,41 @@
+.root {
+    -fx-font-family: "Segoe UI", sans-serif;
+    -fx-background-color: linear-gradient(to bottom, #f3f4f6, #e5e7eb);
+    -fx-padding: 30;
+}
+
+.label {
+    -fx-font-size: 18px;
+    -fx-text-fill: #1f2937;
+    -fx-font-weight: bold;
+}
+
+.button {
+    -fx-font-size: 20px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #1f2937;
+    -fx-background-color: linear-gradient(to bottom, #ffffff, #d1d5db);
+    -fx-border-color: #9ca3af;
+    -fx-border-width: 2;
+    -fx-border-radius: 10;
+    -fx-background-radius: 10;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 4, 0.5, 0, 1);
+    -fx-transition: all 0.2s ease-in-out;
+}
+
+.button:hover {
+    -fx-background-color: #cbd5e1;
+}
+
+.game-button {
+    -fx-font-size: 30px;
+    -fx-font-weight: bold;
+    -fx-min-height: 100px;
+    -fx-min-width: 100px;
+    -fx-text-fill: #111827;
+    -fx-background-color: #ffffff;
+    -fx-border-color: #6b7280;
+    -fx-border-radius: 8;
+    -fx-background-radius: 8;
+}
