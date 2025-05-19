@@ -32,7 +32,6 @@ public class GameController {
         drawBoard();
     }
 
-
     private void drawBoard() {
         gameGrid.getChildren().clear();
         for (int row = 0; row < 3; row++) {
@@ -57,9 +56,15 @@ public class GameController {
                         }
 
                         int severity = game.getGravitate();
+
                         if (game.alertaDeTrimis()) {
                             game.marcheazaAlertaTrimisa();
-                            AlertSender.sendAlert(userId, severity);
+
+                            // Coordonate simulate pentru test
+                            double latitude = 44.4200 + Math.random() * 0.03;   // ex: București
+                            double longitude = 26.0900 + Math.random() * 0.03;
+
+                            AlertSender.sendAlert(userId, severity, latitude, longitude);
                         }
                     }
                 });

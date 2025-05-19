@@ -8,7 +8,7 @@ import java.nio.charset.StandardCharsets;
 
 public class AlertSender {
 
-    public static void sendAlert(String userId, int severity) {
+    public static void sendAlert(String userId, int severity, double latitude, double longitude) {
         new Thread(() -> {
             try {
                 URL url = new URL("http://localhost/safealert_server/receive_alert.php");
@@ -18,7 +18,9 @@ public class AlertSender {
                 conn.setDoOutput(true);
 
                 String data = "user_id=" + URLEncoder.encode(userId, StandardCharsets.UTF_8) +
-                        "&severity=" + URLEncoder.encode(String.valueOf(severity), StandardCharsets.UTF_8);
+                        "&severity=" + URLEncoder.encode(String.valueOf(severity), StandardCharsets.UTF_8) +
+                        "&latitude=" + URLEncoder.encode(String.valueOf(latitude), StandardCharsets.UTF_8) +
+                        "&longitude=" + URLEncoder.encode(String.valueOf(longitude), StandardCharsets.UTF_8);
 
                 try (OutputStream os = conn.getOutputStream()) {
                     os.write(data.getBytes(StandardCharsets.UTF_8));
