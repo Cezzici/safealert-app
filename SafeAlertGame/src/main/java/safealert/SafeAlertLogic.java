@@ -1,12 +1,14 @@
 package safealert;
 
 public class SafeAlertLogic {
-    private final char[][] board = new char[3][3];
+
+    private char[][] board;
     private boolean xTurn;
-    private int moves;
-    private int codGravitate; // 0 = nimic, 2/4/5 = cod detectat
+    private int movesCount;
+    private boolean alertaTrimisa;
 
     public SafeAlertLogic() {
+        board = new char[3][3];
         reset();
     }
 
@@ -15,33 +17,17 @@ public class SafeAlertLogic {
             for (int j = 0; j < 3; j++)
                 board[i][j] = ' ';
         xTurn = true;
-        moves = 0;
-        codGravitate = 0;
+        movesCount = 0;
+        alertaTrimisa = false;
     }
 
     public boolean placeMove(int row, int col) {
-        if (board[row][col] != ' ') return false;
+        if (row < 0 || row > 2 || col < 0 || col > 2 || board[row][col] != ' ')
+            return false;
 
-        char player = getCurrentPlayer();
-        board[row][col] = player;
-        moves++;
-
-        // Cod G4: (0,0) -> (2,2)
-        if (player == 'X' && board[0][0] == 'X' && board[2][2] == 'X') {
-            codGravitate = 4;
-        }
-
-        // Cod G2: (1,1) -> (0,2)
-        if (player == 'X' && board[1][1] == 'X' && board[0][2] == 'X') {
-            codGravitate = 2;
-        }
-
-        // Cod G5: (2,0) -> (2,2)
-        if (player == 'X' && board[2][0] == 'X' && board[2][2] == 'X') {
-            codGravitate = 5;
-        }
-
+        board[row][col] = getCurrentPlayer();
         xTurn = !xTurn;
+        movesCount++;
         return true;
     }
 
@@ -53,32 +39,49 @@ public class SafeAlertLogic {
         return board[row][col];
     }
 
-    public int getGravitate() {
-        return codGravitate;
-    }
-
     public char checkWinner() {
+        // Rânduri și coloane
         for (int i = 0; i < 3; i++) {
-            if (same(board[i][0], board[i][1], board[i][2])) return board[i][0];
-            if (same(board[0][i], board[1][i], board[2][i])) return board[0][i];
+            if (board[i][0] != ' ' &&
+                    board[i][0] == board[i][1] &&
+                    board[i][1] == board[i][2])
+                return board[i][0];
+
+            if (board[0][i] != ' ' &&
+                    board[0][i] == board[1][i] &&
+                    board[1][i] == board[2][i])
+                return board[0][i];
         }
-        if (same(board[0][0], board[1][1], board[2][2])) return board[0][0];
-        if (same(board[0][2], board[1][1], board[2][0])) return board[0][2];
-        if (moves == 9) return 'D';
+
+        // Diagonale
+        if (board[0][0] != ' ' &&
+                board[0][0] == board[1][1] &&
+                board[1][1] == board[2][2])
+            return board[0][0];
+
+        if (board[0][2] != ' ' &&
+                board[0][2] == board[1][1] &&
+                board[1][1] == board[2][0])
+            return board[0][2];
+
+        // Remiză
+        if (movesCount == 9)
+            return 'D';
+
         return ' ';
     }
 
-    private boolean same(char a, char b, char c) {
-        return a != ' ' && a == b && b == c;
-    }
-
-    private boolean alertaTrimisa = false;
-
     public boolean alertaDeTrimis() {
-        return !alertaTrimisa && codGravitate > 0;
+        // Poate fi activat la un număr de mutări sau o anumită secvență
+        return !alertaTrimisa && movesCount == 3;
     }
 
     public void marcheazaAlertaTrimisa() {
         alertaTrimisa = true;
+    }
+
+    public int getGravitate() {
+        // Gravitatea poate fi determinată după nr. mutări, aleator, etc.
+        return 3 + (int)(Math.random() * 3); // între 3 și 5
     }
 }

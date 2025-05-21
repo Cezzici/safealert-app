@@ -11,22 +11,24 @@ public class GameController {
     @FXML private Label statusLabel;
 
     private SafeAlertLogic game;
-    private String userId = "anonim";
+    private String userId;
 
     @FXML
     public void initialize() {
         TextInputDialog dialog = new TextInputDialog();
-        dialog.setTitle("Identificare victimă");
-        dialog.setHeaderText("Introduceți un prenume pentru identificare:");
-        dialog.setContentText("Prenume:");
+        dialog.setTitle("Username");
+        dialog.setHeaderText("Cine joacă?");
+        dialog.setContentText("Username:");
 
         dialog.showAndWait().ifPresentOrElse(input -> {
             if (!input.trim().isEmpty()) {
-                userId = input.trim();
+                UserIdentifier.setDisplayName(input.trim());
             }
         }, () -> {
-            userId = "anonim"; // fallback garantat
+            UserIdentifier.setDisplayName("anonim");
         });
+
+        userId = UserIdentifier.getUUID();
 
         game = new SafeAlertLogic();
         drawBoard();
@@ -39,6 +41,7 @@ public class GameController {
                 Button cell = new Button("");
                 cell.setPrefSize(100, 100);
                 int r = row, c = col;
+
                 cell.setOnAction(e -> {
                     if (game.placeMove(r, c)) {
                         cell.setText(String.valueOf(game.getSymbolAt(r, c)));
@@ -60,14 +63,33 @@ public class GameController {
                         if (game.alertaDeTrimis()) {
                             game.marcheazaAlertaTrimisa();
 
-                            // Coordonate simulate pentru test
-                            double latitude = 44.4200 + Math.random() * 0.03;   // ex: București
-                            double longitude = 26.0900 + Math.random() * 0.03;
+                            double latitude, longitude;
+                            int choice = (int) (Math.random() * 3);
+                            switch (choice) {
+                                case 0:
+                                    latitude = 44.4268 + Math.random() * 0.01;
+                                    longitude = 26.1025 + Math.random() * 0.01;
+                                    break;
+                                case 1:
+                                    latitude = 45.7489 + Math.random() * 0.01;
+                                    longitude = 21.2087 + Math.random() * 0.01;
+                                    break;
+                                case 2:
+                                    latitude = 47.1585 + Math.random() * 0.01;
+                                    longitude = 27.6014 + Math.random() * 0.01;
+                                    break;
+                                default:
+                                    latitude = 44.4268;
+                                    longitude = 26.1025;
+                            }
 
-                            AlertSender.sendAlert(userId, severity, latitude, longitude);
+                            String displayName = UserIdentifier.getDisplayName();
+                            AlertSender.sendAlert(userId, severity, latitude, longitude, displayName);
+                            statusLabel.setText("✅ Alertă trimisă pentru " + displayName);
                         }
                     }
                 });
+
                 gameGrid.add(cell, col, row);
             }
         }

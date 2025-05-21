@@ -1,6 +1,6 @@
 package safealert;
 
-import java.io.*;
+import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
@@ -8,7 +8,7 @@ import java.nio.charset.StandardCharsets;
 
 public class AlertSender {
 
-    public static void sendAlert(String userId, int severity, double latitude, double longitude) {
+    public static void sendAlert(String uuid, int severity, double latitude, double longitude, String name) {
         new Thread(() -> {
             try {
                 URL url = new URL("http://localhost/safealert_server/receive_alert.php");
@@ -17,7 +17,8 @@ public class AlertSender {
                 conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
                 conn.setDoOutput(true);
 
-                String data = "user_id=" + URLEncoder.encode(userId, StandardCharsets.UTF_8) +
+                String data = "user_id=" + URLEncoder.encode(uuid, StandardCharsets.UTF_8) +
+                        "&name=" + URLEncoder.encode(name, StandardCharsets.UTF_8) +
                         "&severity=" + URLEncoder.encode(String.valueOf(severity), StandardCharsets.UTF_8) +
                         "&latitude=" + URLEncoder.encode(String.valueOf(latitude), StandardCharsets.UTF_8) +
                         "&longitude=" + URLEncoder.encode(String.valueOf(longitude), StandardCharsets.UTF_8);
@@ -28,20 +29,10 @@ public class AlertSender {
                 }
 
                 int responseCode = conn.getResponseCode();
-                System.out.println("✅ Alertă trimisă | utilizator: " + userId + " | gravitate: " + severity + " | răspuns: " + responseCode);
-
-                BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-                String line;
-                StringBuilder response = new StringBuilder();
-                while ((line = in.readLine()) != null) {
-                    response.append(line);
-                }
-                in.close();
-                System.out.println("🟣 Răspuns de la server: " + response);
-
                 conn.disconnect();
+
             } catch (Exception e) {
-                System.err.println("❌ Eroare la trimiterea alertei: " + e.getMessage());
+                e.printStackTrace();
             }
         }).start();
     }
