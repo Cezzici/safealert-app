@@ -23,7 +23,7 @@ Handles alerts, form generation, intervention tracking, and PDF exports (via FPD
 
 ## 🧪 Technologies Used
 
-- Java 17, JavaFX, Gluon Mobile, Gluon Charm Down
+- Java 17, JavaFX
 - PHP 7.4+, MySQL 8.0, Apache, FPDF
 - IntelliJ IDEA, XAMPP, GitHub
 
@@ -34,10 +34,6 @@ Handles alerts, form generation, intervention tracking, and PDF exports (via FPD
 - Role-based web access: admin, authority, NGO
 - PDF export for forms and interventions
 - Local simulation and testing enabled
-
-## 🔐 Why Gluon is Essential
-
-Gluon Mobile and Charm Down enable this project to run natively on Android/iOS while keeping Java code shared. Scene Builder speeds up UI prototyping, while Gluon’s native services bridge the gap between JavaFX and mobile hardware APIs.
 
 ## 📷 Screenshots & Report
 
