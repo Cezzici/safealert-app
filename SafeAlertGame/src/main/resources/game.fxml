@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+
+<AnchorPane xmlns:fx="http://javafx.com/fxml" fx:controller="safealert.GameController">
+    <VBox spacing="15" alignment="CENTER" layoutX="20" layoutY="20" style="-fx-padding: 15;">
+    <!-- Logo joc -->
+        <ImageView fitWidth="150" fitHeight="150" preserveRatio="true">
+            <Image url="@tic_tac_logo.png"/>
+        </ImageView>
+
+        <!-- Mesaj de joc (aici se va afisa alerta mascată) -->
+
+        <Label fx:id="statusLabel" text="Randul lui X" styleClass="status-label"/>
+
+        <!-- Scor joc -->
+        <Label fx:id="scoreLabel" text="Scor: X 0 - O 0" styleClass="score-label"/>
+
+        <!-- Tabla de joc - se folosește același GridPane cu ID-ul gameGrid -->
+        <GridPane fx:id="gameGrid" hgap="5" vgap="5" styleClass="game-board">
+            <columnConstraints>
+                <ColumnConstraints percentWidth="33"/>
+                <ColumnConstraints percentWidth="33"/>
+                <ColumnConstraints percentWidth="33"/>
+            </columnConstraints>
+            <rowConstraints>
+                <RowConstraints percentHeight="33"/>
+                <RowConstraints percentHeight="33"/>
+                <RowConstraints percentHeight="33"/>
+            </rowConstraints>
+        </GridPane>
+
+        <!-- Butoane de control (se păstrează funcția de reset) -->
+        <HBox spacing="10">
+            <Button text="Joc Nou" onAction="#handleReset" styleClass="game-button"/>
+            <Button text="Setări" styleClass="game-button" onAction="#showFakeSettings"/>
+        </HBox>
+    </VBox>
+</AnchorPane>
